@@ -28,13 +28,13 @@ final class DynamicSCL extends ClassLoader implements LookupListener {
 
     @Override
     public final void resultChanged(LookupEvent ev) {
-        ClassLoader lkpResCL = sclResult.allInstances().iterator().next();
+        final ClassLoader lkpResCL = sclResult.allInstances().iterator().next();
         synchronized (this) {
             if (getParent() != lkpResCL) {
                 try {
                     Field f = ClassLoader.class.getDeclaredField("parent");
                     f.setAccessible(true);
-                    f.set(this, sclResult.allInstances().iterator().next());
+                    f.set(this, lkpResCL);
                 } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException ex) {
                     throw new RuntimeException(ex);
                 }
