@@ -8,6 +8,7 @@ package org.nbpayara.spi;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -164,7 +165,9 @@ public abstract class DefaultRemoteLookup implements RemoteLookup {
     public void login() throws SecurityException {
     }
 
-    protected abstract Map<String, Class> getBeans();
+    protected Map<String, Class> getBeans() {
+        return Collections.EMPTY_MAP;
+    }
 
     @Override
     public final boolean equals(Object obj) {

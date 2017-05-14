@@ -7,11 +7,13 @@ package org.nbpayara.spi;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.jms.Connection;
 import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
@@ -42,15 +44,13 @@ public class JMSTopicListenerService implements Runnable {
         this.port = port;
         this.connectionFactory = connectionFactory;
         this.topic = topic;
-//        this.iiopEndpoint = iiopEndpoints;
-//        RP.post(this::initialize);
     }
 
     public JMSTopicListenerService(String connectionFactory, String topic) {
         this(null, null, connectionFactory, topic);
     }
 
-    public String getTopics() {
+    public String getTopic() {
         return topic;
     }
 
@@ -70,10 +70,14 @@ public class JMSTopicListenerService implements Runnable {
 
     public void run(final JMSEvent evt) {
         if (listener != null && evt != null) {
-            listeners.entrySet().stream()
-                    .filter(e -> e.getKey().isAssignableFrom(evt.getClass()))
-                    .flatMap(e -> e.getValue().stream())
-                    .forEach(l -> l.onMessage(evt));
+            final List<JMSListener> snapShot;
+            synchronized (listeners) {
+                snapShot = listeners.entrySet().stream()
+                        .filter(e -> e.getKey().isAssignableFrom(evt.getClass()))
+                        .flatMap(e -> e.getValue().stream())
+                        .collect(Collectors.toList());
+            }
+            snapShot.forEach(l -> l.onMessage(evt));
         }
     }
 

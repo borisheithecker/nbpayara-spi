@@ -26,8 +26,8 @@ import org.openide.util.lookup.ServiceProvider;
  * @author boris.heithecker
  */
 @ServiceProvider(service = Processor.class)
-@SupportedAnnotationTypes({"org.thespheres.betula.beans.services.RemoteLookup.Registration",
-    "org.thespheres.betula.beans.services.RemoteLookup.Registrations"})
+@SupportedAnnotationTypes({"org.nbpayara.spi.RemoteLookup.Registration",
+    "org.nbpayara.spi.RemoteLookup.Registrations"})
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class RemoteReferenceLayerGenerator extends LayerGeneratingProcessor {
 
@@ -76,17 +76,11 @@ public class RemoteReferenceLayerGenerator extends LayerGeneratingProcessor {
         String basename = clazz.replace('.', '-');
         String file = path + "/" + basename + ".instance";
         layer(e).file(file)
-                .methodvalue("instanceCreate", "org.thespheres.betula.beans.services.layergen.RemoteReference", "create")
+                .methodvalue("instanceCreate", "org.nbpayara.spi.impl.RemoteReference", "create")
                 .stringvalue("ejbName", name)
                 .stringvalue("beanInterface", beanClazz) //type.toString())
                 .stringvalue("module", module)
                 .write();
-//        layer(e).instanceFile("RemoteLookup", null, null, null)
-//                .methodvalue("instanceCreate", "org.thespheres.betula.beans.services.layergen.RemoteReference", "create")
-//                .stringvalue("ejbName", name)
-//                .stringvalue("type", type.toString())
-//                .stringvalue("module", module)
-//                .write();
     }
 
 }
