@@ -25,7 +25,7 @@ public class RemoteLookupException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return NbBundle.getMessage(JMSTopicListenerService.class, "DefaultRemoteLookupProvider.error.message", ejb, endpoints, getCause().getClass().getName(), getCause().getMessage());
+        return NbBundle.getMessage(RemoteLookupException.class, "RemoteLookupException.error.message", ejb, endpoints, getCause().getClass().getName(), getCause().getMessage());
     }
 
 }

@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import org.apache.commons.lang3.StringUtils;
 import org.nbpayara.core.Domain;
 import org.nbpayara.spi.impl.RemoteReference;
 import org.nbpayara.spi.util.CollectionUtil;
@@ -86,7 +87,7 @@ public abstract class DefaultRemoteLookup implements RemoteLookup {
         final List<RemoteReference<T>> references = new ArrayList<>();
         Lookups.forPath("RemoteLookup").lookupAll(RemoteReference.class).stream()
                 .map(RemoteReference.class::cast)
-                .filter(rl -> rl.getType().equals(clz) && (rl.getModule() == null || modules.contains(rl.getModule())))
+                .filter(rl -> rl.getType().equals(clz) && (StringUtils.isBlank(rl.getModule()) || modules.contains(rl.getModule())))
                 .forEach(references::add);
         final Map<String, Class> beans = getBeans();
         if (beans != null) {
@@ -166,7 +167,7 @@ public abstract class DefaultRemoteLookup implements RemoteLookup {
     }
 
     protected Map<String, Class> getBeans() {
-        return Collections.EMPTY_MAP;
+        return null;
     }
 
     @Override

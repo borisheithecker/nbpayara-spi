@@ -107,7 +107,7 @@ public class JMSTopicListenerService implements Runnable {
             listener = l;
         } catch (NamingException | JMSException ex) {
             listener = null;
-            Logger.getLogger(JMSTopicListenerService.class.getName()).log(Level.WARNING, ex.getMessage());
+            Logger.getLogger(JMSTopicListenerService.class.getName()).log(Level.WARNING, ex.getMessage(), ex);
         }
 
     }
